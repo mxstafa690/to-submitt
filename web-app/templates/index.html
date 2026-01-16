@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FitTrack - Gym Management System</title>
+    <link rel="stylesheet" href="/static/css/styles.css">
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <h1>💪 FitTrack</h1>
+            <p>Gym Management System</p>
+        </div>
+    </header>
+
+    <!-- Navigation -->
+    <nav class="nav">
+        <div class="container">
+            <button class="nav-btn active" data-section="members">Members</button>
+            <button class="nav-btn" data-section="classes">Classes</button>
+            <button class="nav-btn" data-section="plans">Plans</button>
+            <button class="nav-btn" data-section="checkins">Check-ins</button>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="container main-content">
+        <!-- Members Section -->
+        <section id="members-section" class="section active">
+            <div class="section-header">
+                <h2>Members</h2>
+                <button class="btn btn-primary" onclick="showAddMemberForm()">+ Add Member</button>
+            </div>
+            
+            <div id="add-member-form" class="form-card hidden">
+                <h3>Add New Member</h3>
+                <form id="member-form">
+                    <div class="form-group">
+                        <label>Full Name</label>
+                        <input type="text" id="full-name" placeholder="John Doe" minlength="2" maxlength="100" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Email</label>
+                        <input type="email" id="email" placeholder="john@example.com" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Phone (10-15 digits)</label>
+                        <input type="tel" id="phone" placeholder="050-1234567 or 0501234567" pattern="[\d\-\+\(\)\s]{10,15}" required>
+                        <small style="color: #666;">Format: 050-1234567 or 0501234567</small>
+                    </div>
+                    <div class="form-group">
+                        <label>National ID (9 digits)</label>
+                        <input type="text" id="national-id" placeholder="123456789" pattern="\d{9}" maxlength="9" required>
+                        <small style="color: #666;">Must be exactly 9 digits</small>
+                    </div>
+                    <div class="form-group">
+                        <label>Password</label>
+                        <input type="password" id="password" placeholder="Strong password" minlength="8" required>
+                        <small style="color: #666;">Must have: 8+ chars, uppercase, lowercase, digit, special char (!@#$%^&*)</small>
+                    </div>
+                    <div class="form-actions">
+                        <button type="submit" class="btn btn-primary">Save</button>
+                        <button type="button" class="btn btn-secondary" onclick="hideAddMemberForm()">Cancel</button>
+                    </div>
+                </form>
+            </div>
+
+            <div id="members-list" class="cards-grid">
+                <div class="loading">Loading members...</div>
+            </div>
+        </section>
+
+        <!-- Classes Section -->
+        <section id="classes-section" class="section">
+            <div class="section-header">
+                <h2>Gym Classes</h2>
+                <button class="btn btn-primary" onclick="showAddClassForm()">+ Add Class</button>
+            </div>
+            
+            <div id="add-class-form" class="form-card hidden">
+                <h3>Add New Class</h3>
+                <form id="class-form">
+                    <div class="form-group">
+                        <label>Class Title</label>
+                        <input type="text" id="class-title" placeholder="Yoga Flow" minlength="2" maxlength="120" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Instructor Name</label>
+                        <input type="text" id="class-instructor" placeholder="John Smith" minlength="2" maxlength="120" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Start Date and Time</label>
+                        <input type="datetime-local" id="class-start-time" required>
+                        <small style="color: #666;">Select the date and time for the class</small>
+                    </div>
+                    <div class="form-group">
+                        <label>Duration (minutes)</label>
+                        <input type="number" id="class-duration" placeholder="60" min="15" max="300" value="60" required>
+                        <small style="color: #666;">Between 15 and 300 minutes</small>
+                    </div>
+                    <div class="form-group">
+                        <label>Capacity</label>
+                        <input type="number" id="class-capacity" placeholder="20" min="1" max="300" value="20" required>
+                        <small style="color: #666;">Maximum number of participants</small>
+                    </div>
+                    <div class="form-actions">
+                        <button type="submit" class="btn btn-primary">Save</button>
+                        <button type="button" class="btn btn-secondary" onclick="hideAddClassForm()">Cancel</button>
+                    </div>
+                </form>
+            </div>
+
+            <div id="classes-list" class="cards-grid">
+                <div class="loading">Loading classes...</div>
+            </div>
+        </section>
+
+        <!-- Plans Section -->
+        <section id="plans-section" class="section">
+            <div class="section-header">
+                <h2>Membership Plans</h2>
+                <button class="btn btn-primary" onclick="showAddPlanForm()">+ Add Plan</button>
+            </div>
+            
+            <div id="add-plan-form" class="form-card hidden">
+                <h3>Add New Plan</h3>
+                <form id="plan-form">
+                    <div class="form-group">
+                        <label>Plan Name</label>
+                        <input type="text" id="plan-name" placeholder="Monthly Basic" minlength="2" maxlength="120" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Plan Type</label>
+                        <input type="text" id="plan-type" placeholder="monthly, yearly, daily" minlength="3" maxlength="30" required>
+                        <small style="color: #666;">E.g., monthly, yearly, daily, weekly</small>
+                    </div>
+                    <div class="form-group">
+                        <label>Price ($)</label>
+                        <input type="number" id="plan-price" placeholder="99.99" min="0.01" step="0.01" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Valid Days</label>
+                        <input type="number" id="plan-valid-days" placeholder="30" min="1" required>
+                        <small style="color: #666;">How many days the plan is valid for</small>
+                    </div>
+                    <div class="form-group">
+                        <label>Max Entries (optional)</label>
+                        <input type="number" id="plan-max-entries" placeholder="Leave empty for unlimited" min="1">
+                        <small style="color: #666;">Maximum number of gym visits. Leave empty for unlimited access.</small>
+                    </div>
+                    <div class="form-actions">
+                        <button type="submit" class="btn btn-primary">Save</button>
+                        <button type="button" class="btn btn-secondary" onclick="hideAddPlanForm()">Cancel</button>
+                    </div>
+                </form>
+            </div>
+
+            <div id="plans-list" class="cards-grid">
+                <div class="loading">Loading plans...</div>
+            </div>
+        </section>
+
+        <!-- Check-ins Section -->
+        <section id="checkins-section" class="section">
+            <div class="section-header">
+                <h2>Recent Check-ins</h2>
+            </div>
+            <div id="checkins-list" class="list-view">
+                <div class="loading">Loading check-ins...</div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <p>FitTrack &copy; 2026 - Gym Management Made Simple</p>
+        </div>
+    </footer>
+
+    <!-- Load JavaScript -->
+    <script src="/static/js/config.js?v=4"></script>
+    <script src="/static/js/api.js?v=4"></script>
+    <script src="/static/js/app.js?v=4"></script>
+</body>
+</html>
